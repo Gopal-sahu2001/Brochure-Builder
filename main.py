@@ -72,12 +72,24 @@ def get_relevant_links(url):
 def fetch_page_contents_and_links(url):
     contents = fetch_website_contents(url)
     relevant_links = get_relevant_links(url)
-    result =  f"## Landing page:\n\n {contents}\n ##Relevant links:\n"
-    for link in relevant_links["links"]:
-       result += f"\n\n ###{link['type']}\n"
-       result += fetch_website_contents(link['url'])
-    return result
 
+    result = f"## Landing page:\n\n{contents}\n\n## Relevant links:\n"
+
+    for link in relevant_links["links"]:
+        result += f"\n\n## {link['type']}\n"
+
+        # Remove accidental quotes and whitespace
+        link_url = link["url"].strip().strip('"').strip("'")
+
+        try:
+            page_content = fetch_website_contents(link_url)
+            result += page_content
+        except Exception:
+            # If the page can't be scraped (YouTube, LinkedIn, etc.),
+            # include the URL instead of crashing.
+            result += f"Could not retrieve page contents.\nURL: {link_url}\n"
+
+    return result
 # Now have all the user prompt finalized and ready for the last prompt of the creating the brochure 
 def get_brochure_user_prompt(company_name,url):
     user_prompt = f"""
