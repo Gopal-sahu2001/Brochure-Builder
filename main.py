@@ -2,7 +2,7 @@ import json
 import subprocess
 import ollama
 from scraper import fetch_website_contents,fetch_website_links
-from IPython.display import Markdown, display, update_display
+
 
 process = subprocess.Popen(['ollama', 'serve'])
 print("The llama server us working in the background")
@@ -86,31 +86,3 @@ def get_brochure_user_prompt(company_name,url):
     user_prompt = user_prompt[:5000]
 
     return user_prompt
-#The final function for streaming the
-#
-#def stream_brochure(company_name,url):
-#    stream = ollama.chat(
-#        model = "qwen3:8b",
-#        messages = [
-#            {"role":"system", "content":brochure_system_prompt},
-#            {"role":"user", "content":get_brochure_user_prompt(company_name,url)}
-#        ],
-#        stream = True
-#    )
-#    response = ""
-#    display_handle = display(Markdown(""),display_id=True)
-#    for chunk in stream:
-#        response += chunk.message.content or ""
-#        update_display(Markdown(response),display_id=display_handle.display_id)
-
-#def main():
-#    company_name = input("Enter the company name: ")
-#    website_url = input("Enter the company website URL: ")
-#
-#    print("\nGenerating brochure...\n")#
-#
-#    stream_brochure(company_name, website_url)
-
-
-#if __name__ == "__main__":
-#    main()
