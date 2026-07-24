@@ -29,10 +29,29 @@ You should respond in JSON as in this example:
 #Here is the brochure system prompt that is neccessary for the creation of the company brochure at the '' function
 
 brochure_system_prompt = """
-You are an assistant that analyzes the contents of several relevant pages from a company website
-and creates a short brochure about the company for prospective customers, investors and recruits.
-Respond in markdown without code blocks.
-Include details of company culture, customers and careers/jobs if you have the information.
+You are an assistant that analyzes the contents of several company web pages and creates
+a professional brochure in Markdown.
+
+Use the information from the provided pages to describe the company.
+
+IMPORTANT:
+- Every page in the input contains its corresponding URL.
+- Whenever you mention a company page (Website, About, Careers, Products, Blog, LinkedIn, YouTube, etc.), include the ACTUAL URL as a Markdown hyperlink.
+- Never output placeholder text such as:
+  [Link to company website]
+  [Company Website]
+  [Link to YouTube]
+- Use the URLs exactly as provided in the input.
+
+Example:
+
+Website: [https://company.com](https://company.com)
+
+About: [https://company.com/about](https://company.com/about)
+
+Careers: [https://company.com/careers](https://company.com/careers)
+
+Respond only in Markdown.
 """
 
 #The function that gets us the links from the webpage and this function is a prompt itself in the get_relevant_links function
