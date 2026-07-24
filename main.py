@@ -55,19 +55,16 @@ def get_links_from_url(url):
 
 def get_relevant_links(url):
     response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
-            messages=[
-            {
-                "role": "system",
-                "content": link_system_prompt
-            },
-            {
-                "role": "user",
-                "content": get_links_from_url(url)
-            }
+        model="llama-3.1-8b-instant",
+        messages=[
+            {"role": "system", "content": link_system_prompt},
+            {"role": "user", "content": get_links_from_url(url)}
         ],
         response_format={"type": "json_object"}
     )
+
+    result = response.choices[0].message.content
+    links = json.loads(result)
     return links
 
 #Now fetch all the relevant links and the page contents then use this as a prompt to create a brochure
