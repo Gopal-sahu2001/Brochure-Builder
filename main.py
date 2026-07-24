@@ -5,7 +5,7 @@ from scraper import fetch_website_contents,fetch_website_links
 
 
 client = OpenAI(
-    api_key=os.getenv("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"),
+    api_key=os.getenv(GROQ_API_KEY),
     base_url="https://api.groq.com/openai/v1"
 )
 #The variables to be given as prompts to the LLM for Brochure generation
