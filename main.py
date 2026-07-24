@@ -1,11 +1,13 @@
 import json
-import subprocess
-import ollama
+from openai import OpenAI
+import os
 from scraper import fetch_website_contents,fetch_website_links
 
 
-process = subprocess.Popen(['ollama', 'serve'])
-print("The llama server us working in the background")
+client = OpenAI(
+    api_key=os.getenv("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"),
+    base_url="https://api.groq.com/openai/v1"
+)
 #The variables to be given as prompts to the LLM for Brochure generation
 
 #This is the link system prompt for the input given to fetch all the links in the given website url at '' function
@@ -52,16 +54,20 @@ def get_links_from_url(url):
 #the type of links desired is requested using link_system_prompt,and the actual links are fetched using get_links_from_url(url)function
 
 def get_relevant_links(url):
-    response = ollama.chat(
-        model = "qwen3:8b",
-        messages = [
-            {"role" : "system", "content":link_system_prompt},
-            {"role" : "user", "content":get_links_from_url(url)}
+    response = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[
+            {
+                "role": "system",
+                "content": link_system_prompt
+            },
+            {
+                "role": "user",
+                "content": get_links_from_url(url)
+            }
         ],
-        format = "json"
+        response_format={"type": "json_object"}
     )
-    result = response.message.content
-    links = json.loads(result)
     return links
 
 #Now fetch all the relevant links and the page contents then use this as a prompt to create a brochure
