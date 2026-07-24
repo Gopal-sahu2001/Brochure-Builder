@@ -1,0 +1,5 @@
+streamlit
+ollama
+requests
+beautifulsoup4
+lxml
