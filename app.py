@@ -1,15 +1,18 @@
+import os
 import streamlit as st
 from openai import OpenAI
 from main import brochure_system_prompt, get_brochure_user_prompt
 
-# -----------------------------
-# Groq Client
-# -----------------------------
+api_key = os.getenv("GROQ_API_KEY")
+
+if not api_key:
+    st.error("GROQ_API_KEY environment variable is not set.")
+    st.stop()
+
 client = OpenAI(
-    api_key=st.secrets["GROQ_API_KEY"],
+    api_key=api_key,
     base_url="https://api.groq.com/openai/v1"
 )
-
 # -----------------------------
 # Streamlit Configuration
 # -----------------------------
