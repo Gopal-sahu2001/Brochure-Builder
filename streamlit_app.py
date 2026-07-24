@@ -1,5 +1,5 @@
 import streamlit as st
-import ollama
+from openai import OpenAI
 from main import brochure_system_prompt, get_brochure_user_prompt
 
 st.set_page_config(
@@ -25,8 +25,8 @@ if st.button("Generate Brochure"):
             try:
                 user_prompt = get_brochure_user_prompt(company_name, website_url)
 
-                stream = ollama.chat(
-                    model="qwen3:8b",
+                stream = client.chat.completions.create(
+                    model="llama-3.1-8b-instant",
                     messages=[
                         {
                             "role": "system",
