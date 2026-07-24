@@ -82,8 +82,13 @@ def get_relevant_links(url):
         response_format={"type": "json_object"}
     )
 
+    #result = response.choices[0].message.content
+    #links = json.loads(result)
     result = response.choices[0].message.content
+    print(result)
+    
     links = json.loads(result)
+    print(links)
     return links
 
 #Now fetch all the relevant links and the page contents then use this as a prompt to create a brochure
@@ -98,9 +103,16 @@ def fetch_page_contents_and_links(url):
     result += "\n\n# Relevant Pages\n"
 
     for link in relevant_links["links"]:
-        link_url = link["url"].strip().strip('"').strip("'")
+        print(type(link), link)
 
-        result += f"\n\n## {link['type']}\n"
+        if isinstance(link, dict):
+            link_type = link.get("type", "Relevant Page")
+            link_url = link.get("url", "").strip().strip('"').strip("'")
+        else:
+            link_type = "Relevant Page"
+            link_url = str(link).strip().strip('"').strip("'")
+
+        result += f"\n\n## {link_type}\n"
         result += f"URL: {link_url}\n\n"
 
         try:
@@ -110,6 +122,7 @@ def fetch_page_contents_and_links(url):
             result += "Content could not be retrieved.\n"
 
     return result
+
 # Now have all the user prompt finalized and ready for the last prompt of the creating the brochure 
 def get_brochure_user_prompt(company_name,url):
     user_prompt = f"""
